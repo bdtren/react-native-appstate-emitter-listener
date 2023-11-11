@@ -11,11 +11,21 @@ npm install react-native-appstate-emitter-listener
 ## Usage
 
 ```js
-import { multiply } from 'react-native-appstate-emitter-listener';
+import {
+  addEventListener,
+  initActivityListener,
+} from 'react-native-appstate-emitter-listener';
 
 // ...
 
-const result = await multiply(3, 7);
+//To init android activity listener
+initActivityListener();
+
+//listenable states are: 'change' | 'activityChange' | 'window'
+addEventListener('change', (e) => {
+  console.log('state changed:', e);
+  setState(e.state);
+});
 ```
 
 ## Contributing

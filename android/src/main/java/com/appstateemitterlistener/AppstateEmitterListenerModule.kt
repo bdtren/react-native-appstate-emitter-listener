@@ -16,7 +16,7 @@ import com.facebook.react.bridge.WindowFocusChangeListener
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
-class AppstateListenerModule(reactContext: ReactApplicationContext) :
+class AppstateEmitterListenerModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
   override fun getName(): String {
@@ -24,7 +24,7 @@ class AppstateListenerModule(reactContext: ReactApplicationContext) :
   }
 
   companion object {
-    const val NAME = "AppstateListener"
+    const val NAME = "AppstateEmitterListener"
   }
 
   init {

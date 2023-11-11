@@ -1,18 +1,27 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-appstate-emitter-listener';
+import {
+  addEventListener,
+  initActivityListener,
+  type ChangeStates,
+} from 'react-native-appstate-emitter-listener';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [state, setState] = React.useState<ChangeStates | undefined>('active');
 
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    initActivityListener();
+
+    addEventListener('change', (e) => {
+      console.log('state changed:', e);
+      setState(e.state);
+    });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Current State: {state}</Text>
     </View>
   );
 }

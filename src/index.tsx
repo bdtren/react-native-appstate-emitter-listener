@@ -10,8 +10,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const AppstateListener = NativeModules.AppstateListener
-  ? NativeModules.AppstateListener
+const AppstateEmitterListener = NativeModules.AppstateEmitterListener
+  ? NativeModules.AppstateEmitterListener
   : new Proxy(
       {},
       {
@@ -25,10 +25,10 @@ export function initActivityListener() {
   if (isIOS) {
     return undefined;
   }
-  return AppstateListener.initActivityListener();
+  return AppstateEmitterListener.initActivityListener();
 }
 
-const eventEmitter = new NativeEventEmitter(AppstateListener);
+const eventEmitter = new NativeEventEmitter(AppstateEmitterListener);
 
 export const addEventListener = <E extends ListenerEventTypes>(
   eventType: E,
