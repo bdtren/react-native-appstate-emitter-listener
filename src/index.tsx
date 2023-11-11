@@ -1,0 +1,36 @@
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
+import type { ListenerEventProps, ListenerEventTypes } from './index.types';
+export * from './index.types';
+
+const isIOS = Platform.OS === 'ios';
+
+const LINKING_ERROR =
+  `The package 'react-native-appstate-listener' doesn't seem to be linked. Make sure: \n\n` +
+  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
+  '- You rebuilt the app after installing the package\n' +
+  '- You are not using Expo Go\n';
+
+const AppstateListener = NativeModules.AppstateListener
+  ? NativeModules.AppstateListener
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
+
+export function initActivityListener() {
+  if (isIOS) {
+    return undefined;
+  }
+  return AppstateListener.initActivityListener();
+}
+
+const eventEmitter = new NativeEventEmitter(AppstateListener);
+
+export const addEventListener = <E extends ListenerEventTypes>(
+  eventType: E,
+  listener: (event: ListenerEventProps[E]) => any
+) => eventEmitter?.addListener(eventType, listener);
